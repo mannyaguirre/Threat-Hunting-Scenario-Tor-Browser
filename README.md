@@ -38,7 +38,19 @@ DeviceFileEvents
 | where ActionType == "FileCreated"
 | sort by Timestamp desc
 ```
-<img width="1212" alt="image" src="https://github.com/user-attachments/assets/71402e84-8767-44f8-908c-1805be31122d">
+<img width="1082" height="463" alt="image" src="https://github.com/user-attachments/assets/4c814a1d-5426-4934-9b70-6e7ecbec97f3" />
+
+This query returned 46,264 file creation events.
+
+To narrow the scope to potential TOR-related artifacts, results were filtered for “tor.exe”:
+
+DeviceFileEvents
+| where Timestamp >= ago(24h)
+| where ActionType == "FileCreated"
+| where FileName contains "tor.exe"
+| sort by Timestamp desc
+
+<img width="1081" height="458" alt="image" src="https://github.com/user-attachments/assets/409020a7-c255-4fd0-9d1c-f1e8869d41d7" />
 
 ---
 
