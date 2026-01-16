@@ -1,5 +1,4 @@
 # Threat-Hunting-Scenario-Tor-Browser
-# Official [Cyber Range](http://joshmadakor.tech/cyber-range) Project
 
 <img width="400" src="https://github.com/user-attachments/assets/44bac428-01bb-4fe9-9d85-96cba7698bee" alt="Tor Logo with the onion and a crosshair on it"/>
 
@@ -7,7 +6,7 @@
 - [Scenario Creation](https://github.com/mannyaguirre/Threat-Hunting-Scenario-Tor-Browser/blob/main/threat-hunting-scenario-tor-event-creation.md)
 
 ## Platforms and Languages Leveraged
-- Windows 10 Virtual Machines (Microsoft Azure)
+- Windows 11 Virtual Machines (Microsoft Azure)
 - EDR Platform: Microsoft Defender for Endpoint
 - Kusto Query Language (KQL)
 - Tor Browser
@@ -130,9 +129,9 @@ DeviceFileEvents
 
 **Two related files were found:**
 
-**tor-shopping-list.txt.lnk**
+-tor-shopping-list.txt.lnk
 
-**tor-shopping-list.txt.txt**
+-tor-shopping-list.txt.txt
 
 **These were created about one second apart on Jan 15, 2026.**
 
@@ -156,45 +155,73 @@ DeviceNetworkEvents
 
 ### 1. File Download – TOR Installer
 **Timestamp:** Jan 15, 2026 2:00:46 PM
-**Event:** The user “mannyuser” downloaded the TOR Browser installer named tor-browser-windows-x86_64-portable-15.0.4.exe to the Downloads folder on manny-vm.
-**Action:** File download detected (installer file created in Downloads with a TOR Project origin URL).
-**File Path:** C:\Users\mannyuser\Downloads\tor-browser-windows-x86_64-portable-15.0.4.exe
+
+**Event:** The user “mannyuser” downloaded the TOR Browser installer named tor-browser-windows-x86_64-portable-15.0.4.exe to the Downloads folder on manny-vm. 
+
+**Action:** File download detected (installer file created in Downloads with a TOR Project origin URL). 
+
+**File Path:** C:\Users\mannyuser\Downloads\tor-browser-windows-x86_64-portable-15.0.4.exe 
 
 ### 2. Process Execution – TOR Browser Installation (Silent Mode)
 **Timestamp:** Jan 15, 2026 2:07:17 PM
+
 **Event:** The TOR Browser installer tor-browser-windows-x86_64-portable-15.0.4.exe executed in silent mode (/S) and began installing/extracting TOR Browser components.
+
 **Action:** Silent installation activity observed (file creation tied to installer running with /S).
+
 **Command:** tor-browser-windows-x86_64-portable-15.0.4.exe /S
+
 **Parent Process:** cmd.exe
+
 **Installer Path:** C:\Users\mannyuser\Downloads\tor-browser-windows-x86_64-portable-15.0.4.exe
 
 ### 3. File Creation – TOR Executable 
+
 **Timestamp:** Jan 15, 2026 2:07:17 PM
+
 **Event:** The TOR executable tor.exe was created on manny-vm as part of the TOR Browser install/extraction.
+
 **Action:** File creation detected.
+
 **File Path:** C:\Users\mannyuser\Desktop\Tor Browser\Browser\TorBrowser\Tor\tor.exe
 
 ### 4. Process Execution – TOR Launched
+
 **Timestamp:** Jan 15, 2026 2:08:01 PM
+
 **Event:** tor.exe executed on manny-vm, and the initiating process was firefox.exe (TOR Browser’s bundled Firefox).
+
 **Action:** TOR execution detected.
+
 **File Path:** C:\Users\mannyuser\Desktop\Tor Browser\Browser\TorBrowser\Tor\tor.exe
 
 ### 5. Network Connection – TOR Network Activity Confirmed
+
 **Timestamp:** Jan 15, 2026 2:09:19 PM
+
 **Event:** tor.exe established an outbound connection to an external IP over port 9001, confirming TOR network activity.
+
 **Action:** Connection success.
+
 **Remote IP / Port:** 185.120.16.176:9001
 
 ### 6 File Creation – TOR Shopping List Files
-**Timestamp:** Jan 15, 2026 3:06:46 PM
+
+**Timestamp #1:** Jan 15, 2026 3:06:46 PM
+
 **Event:** A file named tor-shopping-list.txt.txt was created on the Desktop.
+
 **Action:** File creation detected.
+
 **File Path:** C:\Users\mannyuser\Desktop\tor-shopping-list.txt.txt
 
-**Timestamp:** Jan 15, 2026 3:06:47 PM
+
+**Timestamp #2:** Jan 15, 2026 3:06:47 PM
+
 **Event:** A shortcut named tor-shopping-list.txt.lnk was created in the Windows “Recent” items folder
+
 **Action:** File creation detected.
+
 **File Path:** C:\Users\mannyuser\AppData\Roaming\Microsoft\Windows\Recent\tor-shopping-list.txt.lnk
 
 ---
