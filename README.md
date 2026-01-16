@@ -26,7 +26,7 @@ Management suspects that some employees may be using TOR browsers to bypass netw
 
 ## Steps Taken
 
-
+## Step 1 ##
 **The hunt began with a broad review of file creation activity over the last 24 hours using DeviceFileEvents:**
 
 
@@ -44,6 +44,7 @@ DeviceFileEvents
 
 **This query returned 46,264 file creation events.**
 
+## Step 2 ##
 **To focus on TOR, results were filtered for “tor.exe”:**
 
 
@@ -59,6 +60,7 @@ DeviceFileEvents
 
 <img width="1081" height="458" alt="image" src="https://github.com/user-attachments/assets/409020a7-c255-4fd0-9d1c-f1e8869d41d7" />
 
+## Step 3 ##
 **Next, a check was performed to confirm whether a file named exactly “tor.exe” was created:**
 
 ```kql
@@ -73,6 +75,7 @@ DeviceFileEvents
 
 <img width="1039" height="545" alt="image" src="https://github.com/user-attachments/assets/c1caec8e-6bed-42d9-8613-43487fe32218" />
 
+## Step 4 ##
 **To see which user and which device were tied to that file creation, the account and device fields were shown:**
 
 ```kql
@@ -98,6 +101,7 @@ DeviceFileEvents
 ```
 <img width="956" height="224" alt="image" src="https://github.com/user-attachments/assets/1f333cbd-605d-4e9a-b942-44191941ea4b" />
 
+## Step 5 ##
 **Next, process activity was checked to see how “tor.exe” was run:**
 
 ```kql
@@ -111,6 +115,7 @@ DeviceProcessEvents
 
 **This showed that “tor.exe” ran on “manny-vm,” and it was launched by “firefox.exe.” In plain terms: Tor was started from Firefox.**
 
+## Step 6 ##
 **After that, other TOR-related files created on the same device were reviewed:**
 
 ```kql
@@ -130,6 +135,20 @@ DeviceFileEvents
 **tor-shopping-list.txt.txt**
 
 **These were created about one second apart on Jan 15, 2026.**
+
+## Step 7 ##
+**DeviceNetworkEvents confirmed TOR-related connections from manny-vm; tor.exe connected outbound over port 9001 to external IPs, and firefox.exe. The following query was used to identify these events**
+
+```kql
+DeviceNetworkEvents
+| where Timestamp >= ago(24h)
+| where DeviceName == "manny-vm"
+| where RemotePort in (9001, 9030, 9040, 9050, 9051, 9150)
+| project Timestamp, DeviceName, InitiatingProcessFileName, InitiatingProcessCommandLine, RemoteIP, RemotePort, RemoteUrl
+| order by Timestamp desc
+```
+
+<img width="939" height="227" alt="image" src="https://github.com/user-attachments/assets/b0e7a5b1-0e95-44f9-a081-f5fa114451eb" />
 
 ---
 
@@ -184,8 +203,7 @@ DeviceFileEvents
 
 ## Summary
 
-In the last 24 hours, file creation logs were reviewed and narrowed down from 46,264  events to TOR-related activity. A file named tor.exe was confirmed as created on the device manny-vm, and the associated user was mannyuser (shown in the request account fields). Process logs then showed tor.exe was executed on manny-vm, with firefox.exe listed as the initiating process, meaning Tor was launched from Firefox. Additional TOR-related files were also created on the same device: tor-shopping-list.txt.lnk and tor-shopping-list.txt.txt, created about one second apart; the .lnk file is a Windows shortcut that can disguise itself as a harmless document. Based on confirmed TOR-related file creation and execution, the device was isolated in Microsoft Defender for Endpoint and management was notified per the lab scenario.
-
+In the last 24 hours, file creation logs were reviewed and narrowed down from 46,264 events to TOR-related activity. A file named tor.exe was confirmed as created on the device manny-vm, and the associated user was mannyuser based on the request account fields. Process logs showed that tor.exe executed on manny-vm, with firefox.exe listed as the initiating process, meaning Tor was launched from Firefox. Additional TOR-related files were also created on the same device: tor-shopping-list.txt.lnk and tor-shopping-list.txt.txt. Network logs then confirmed TOR-related connections: tor.exe made outbound connections over port 9001 to external IP addresses, and firefox.exe connected to a local TOR proxy on 127.0.0.1:9150. Based on confirmed TOR-related file creation, execution, and network activity, the device was isolated in Microsoft Defender for Endpoint and management was notified per the lab scenario.
 ---
 
 ## Response Taken
