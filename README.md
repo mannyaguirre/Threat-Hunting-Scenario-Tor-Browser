@@ -44,6 +44,7 @@ This query returned 46,264 file creation events.
 
 To narrow the scope to potential TOR-related artifacts, results were filtered for “tor.exe”:
 
+```kql
 DeviceFileEvents
 | where Timestamp >= ago(24h)
 | where ActionType == "FileCreated"
