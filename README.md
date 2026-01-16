@@ -154,56 +154,54 @@ DeviceNetworkEvents
 
 ## Chronological Event Timeline 
 
-### 1. File Download - TOR Installer
+### 1. File Download – TOR Installer
+**Timestamp:** Jan 15, 2026 2:00:46 PM
+**Event:** The user “mannyuser” downloaded the TOR Browser installer named tor-browser-windows-x86_64-portable-15.0.4.exe to the Downloads folder on manny-vm.
+**Action:** File download detected (installer file created in Downloads with a TOR Project origin URL).
+**File Path:** C:\Users\mannyuser\Downloads\tor-browser-windows-x86_64-portable-15.0.4.exe
 
-- **Timestamp:** `2024-11-08T22:14:48.6065231Z`
-- **Event:** The user "employee" downloaded a file named `tor-browser-windows-x86_64-portable-14.0.1.exe` to the Downloads folder.
-- **Action:** File download detected.
-- **File Path:** `C:\Users\employee\Downloads\tor-browser-windows-x86_64-portable-14.0.1.exe`
+### 2. Process Execution – TOR Browser Installation (Silent Mode)
+**Timestamp:** Jan 15, 2026 2:07:17 PM
+**Event:** The TOR Browser installer tor-browser-windows-x86_64-portable-15.0.4.exe executed in silent mode (/S) and began installing/extracting TOR Browser components.
+**Action:** Silent installation activity observed (file creation tied to installer running with /S).
+**Command:** tor-browser-windows-x86_64-portable-15.0.4.exe /S
+**Parent Process:** cmd.exe
+**Installer Path:** C:\Users\mannyuser\Downloads\tor-browser-windows-x86_64-portable-15.0.4.exe
 
-### 2. Process Execution - TOR Browser Installation
+### 3. File Creation – TOR Executable 
+**Timestamp:** Jan 15, 2026 2:07:17 PM
+**Event:** The TOR executable tor.exe was created on manny-vm as part of the TOR Browser install/extraction.
+**Action:** File creation detected.
+**File Path:** C:\Users\mannyuser\Desktop\Tor Browser\Browser\TorBrowser\Tor\tor.exe
 
-- **Timestamp:** `2024-11-08T22:16:47.4484567Z`
-- **Event:** The user "employee" executed the file `tor-browser-windows-x86_64-portable-14.0.1.exe` in silent mode, initiating a background installation of the TOR Browser.
-- **Action:** Process creation detected.
-- **Command:** `tor-browser-windows-x86_64-portable-14.0.1.exe /S`
-- **File Path:** `C:\Users\employee\Downloads\tor-browser-windows-x86_64-portable-14.0.1.exe`
+### 4. Process Execution – TOR Launched
+**Timestamp:** Jan 15, 2026 2:08:01 PM
+**Event:** tor.exe executed on manny-vm, and the initiating process was firefox.exe (TOR Browser’s bundled Firefox).
+**Action:** TOR execution detected.
+**File Path:** C:\Users\mannyuser\Desktop\Tor Browser\Browser\TorBrowser\Tor\tor.exe
 
-### 3. Process Execution - TOR Browser Launch
+### 5. Network Connection – TOR Network Activity Confirmed
+**Timestamp:** Jan 15, 2026 2:09:19 PM
+**Event:** tor.exe established an outbound connection to an external IP over port 9001, confirming TOR network activity.
+**Action:** Connection success.
+**Remote IP / Port:** 185.120.16.176:9001
 
-- **Timestamp:** `2024-11-08T22:17:21.6357935Z`
-- **Event:** User "employee" opened the TOR browser. Subsequent processes associated with TOR browser, such as `firefox.exe` and `tor.exe`, were also created, indicating that the browser launched successfully.
-- **Action:** Process creation of TOR browser-related executables detected.
-- **File Path:** `C:\Users\employee\Desktop\Tor Browser\Browser\TorBrowser\Tor\tor.exe`
+### 6 File Creation – TOR Shopping List Files
+**Timestamp:** Jan 15, 2026 3:06:46 PM
+**Event:** A file named tor-shopping-list.txt.txt was created on the Desktop.
+**Action:** File creation detected.
+**File Path:** C:\Users\mannyuser\Desktop\tor-shopping-list.txt.txt
 
-### 4. Network Connection - TOR Network
-
-- **Timestamp:** `2024-11-08T22:18:01.1246358Z`
-- **Event:** A network connection to IP `176.198.159.33` on port `9001` by user "employee" was established using `tor.exe`, confirming TOR browser network activity.
-- **Action:** Connection success.
-- **Process:** `tor.exe`
-- **File Path:** `c:\users\employee\desktop\tor browser\browser\torbrowser\tor\tor.exe`
-
-### 5. Additional Network Connections - TOR Browser Activity
-
-- **Timestamps:**
-  - `2024-11-08T22:18:08Z` - Connected to `194.164.169.85` on port `443`.
-  - `2024-11-08T22:18:16Z` - Local connection to `127.0.0.1` on port `9150`.
-- **Event:** Additional TOR network connections were established, indicating ongoing activity by user "employee" through the TOR browser.
-- **Action:** Multiple successful connections detected.
-
-### 6. File Creation - TOR Shopping List
-
-- **Timestamp:** `2024-11-08T22:27:19.7259964Z`
-- **Event:** The user "employee" created a file named `tor-shopping-list.txt` on the desktop, potentially indicating a list or notes related to their TOR browser activities.
-- **Action:** File creation detected.
-- **File Path:** `C:\Users\employee\Desktop\tor-shopping-list.txt`
+**Timestamp:** Jan 15, 2026 3:06:47 PM
+**Event:** A shortcut named tor-shopping-list.txt.lnk was created in the Windows “Recent” items folder
+**Action:** File creation detected.
+**File Path:** C:\Users\mannyuser\AppData\Roaming\Microsoft\Windows\Recent\tor-shopping-list.txt.lnk
 
 ---
 
 ## Summary
 ---
-In the last 24 hours, file creation logs were reviewed and narrowed down from 5,194 events to TOR-related activity. A file named tor.exe was confirmed as created on the device manny-vm, and the associated user was mannyuser based on the request account fields. Process logs showed that tor.exe executed on manny-vm, with firefox.exe listed as the initiating process, meaning Tor was launched from Firefox. Additional TOR-related files were also created on the same device: tor-shopping-list.txt.lnk and tor-shopping-list.txt.txt, created about one second apart; the .lnk file is a Windows shortcut that can be used to disguise a link/launcher as a harmless document. Network logs then confirmed TOR-related connections: tor.exe made outbound connections over port 9001 to external IP addresses, and firefox.exe connected to a local TOR proxy on 127.0.0.1:9150. Based on confirmed TOR-related file creation, execution, and network activity, the device was isolated in Microsoft Defender for Endpoint and management was notified per the lab scenario
+In the last 24 hours, file creation logs were reviewed and narrowed down from 46,264 events to TOR-related activity. A file named tor.exe was confirmed as created on the device manny-vm, and the associated user was mannyuser based on the request account fields. Process logs showed that tor.exe executed on manny-vm, with firefox.exe listed as the initiating process, meaning Tor was launched from Firefox. Additional TOR-related files were also created on the same device: tor-shopping-list.txt.lnk and tor-shopping-list.txt.txt, created about one second apart; the .lnk file is a Windows shortcut that can be used to disguise a link/launcher as a harmless document. Network logs then confirmed TOR-related connections: tor.exe made outbound connections over port 9001 to external IP addresses, and firefox.exe connected to a local TOR proxy on 127.0.0.1:9150. Based on confirmed TOR-related file creation, execution, and network activity, the device was isolated in Microsoft Defender for Endpoint and management was notified per the lab scenario
 
 ## Response Taken
 
