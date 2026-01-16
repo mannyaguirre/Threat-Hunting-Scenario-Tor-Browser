@@ -202,9 +202,8 @@ DeviceNetworkEvents
 ---
 
 ## Summary
-
-In the last 24 hours, file creation logs were reviewed and narrowed down from 46,264 events to TOR-related activity. A file named tor.exe was confirmed as created on the device manny-vm, and the associated user was mannyuser based on the request account fields. Process logs showed that tor.exe executed on manny-vm, with firefox.exe listed as the initiating process, meaning Tor was launched from Firefox. Additional TOR-related files were also created on the same device: tor-shopping-list.txt.lnk and tor-shopping-list.txt.txt. Network logs then confirmed TOR-related connections: tor.exe made outbound connections over port 9001 to external IP addresses, and firefox.exe connected to a local TOR proxy on 127.0.0.1:9150. Based on confirmed TOR-related file creation, execution, and network activity, the device was isolated in Microsoft Defender for Endpoint and management was notified per the lab scenario.
 ---
+In the last 24 hours, file creation logs were reviewed and narrowed down from 5,194 events to TOR-related activity. A file named tor.exe was confirmed as created on the device manny-vm, and the associated user was mannyuser based on the request account fields. Process logs showed that tor.exe executed on manny-vm, with firefox.exe listed as the initiating process, meaning Tor was launched from Firefox. Additional TOR-related files were also created on the same device: tor-shopping-list.txt.lnk and tor-shopping-list.txt.txt, created about one second apart; the .lnk file is a Windows shortcut that can be used to disguise a link/launcher as a harmless document. Network logs then confirmed TOR-related connections: tor.exe made outbound connections over port 9001 to external IP addresses, and firefox.exe connected to a local TOR proxy on 127.0.0.1:9150. Based on confirmed TOR-related file creation, execution, and network activity, the device was isolated in Microsoft Defender for Endpoint and management was notified per the lab scenario
 
 ## Response Taken
 
