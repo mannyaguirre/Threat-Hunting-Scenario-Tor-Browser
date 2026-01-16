@@ -50,6 +50,7 @@ DeviceFileEvents
 | where ActionType == "FileCreated"
 | where FileName contains "tor.exe"
 | sort by Timestamp desc
+```
 
 <img width="1081" height="458" alt="image" src="https://github.com/user-attachments/assets/409020a7-c255-4fd0-9d1c-f1e8869d41d7" />
 
