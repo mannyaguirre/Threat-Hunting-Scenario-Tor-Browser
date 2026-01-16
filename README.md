@@ -26,11 +26,11 @@ Management suspects that some employees may be using TOR browsers to bypass netw
 
 ## Steps Taken
 
-### 1. Searched the `DeviceFileEvents` Table
 
-The hunt began with a broad review of file creation activity over the last 24 hours using DeviceFileEvents:
+**The hunt began with a broad review of file creation activity over the last 24 hours using DeviceFileEvents:**
 
-**Query used to locate events:**
+
+Query used to locate events:
 
 ```kql
 DeviceFileEvents
@@ -40,9 +40,13 @@ DeviceFileEvents
 ```
 <img width="1082" height="463" alt="image" src="https://github.com/user-attachments/assets/4c814a1d-5426-4934-9b70-6e7ecbec97f3" />
 
-This query returned 46,264 file creation events.
 
-To focus on TOR, results were filtered for “tor.exe”::
+
+**This query returned 46,264 file creation events.**
+
+**To focus on TOR, results were filtered for “tor.exe”:**
+
+
 
 ```kql
 DeviceFileEvents
@@ -51,11 +55,11 @@ DeviceFileEvents
 | where FileName contains "tor.exe"
 | sort by Timestamp desc
 ```
-This reduced the dataset to 97 events within the last 24 hours.
+**This reduced the dataset to 97 events within the last 24 hours.**
 
 <img width="1081" height="458" alt="image" src="https://github.com/user-attachments/assets/409020a7-c255-4fd0-9d1c-f1e8869d41d7" />
 
-Next, a check was performed to confirm whether a file named exactly “tor.exe” was created:
+**Next, a check was performed to confirm whether a file named exactly “tor.exe” was created:**
 
 ```kql
 DeviceFileEvents
@@ -65,11 +69,11 @@ DeviceFileEvents
 | sort by Timestamp desc
 ```
 
-This returned 1 result, confirming that tor.exe was created within the last 24 hours.
+**This returned 1 result, confirming that tor.exe was created within the last 24 hours.**
 
 <img width="1039" height="545" alt="image" src="https://github.com/user-attachments/assets/c1caec8e-6bed-42d9-8613-43487fe32218" />
 
-To see which user and which device were tied to that file creation, the account and device fields were shown:
+**To see which user and which device were tied to that file creation, the account and device fields were shown:**
 
 ```kql
 DeviceFileEvents
@@ -82,7 +86,7 @@ DeviceFileEvents
 
 <img width="682" height="202" alt="image" src="https://github.com/user-attachments/assets/f1a64ae4-2a03-4fd0-a4e7-29be01722c1b" />
 
-The user tied to the activity was “mannyuser” and the device was “manny-vm.”
+**The user tied to the activity was “mannyuser” and the device was “manny-vm.”**
 
 ```kql
 DeviceFileEvents
@@ -94,7 +98,7 @@ DeviceFileEvents
 ```
 <img width="956" height="224" alt="image" src="https://github.com/user-attachments/assets/1f333cbd-605d-4e9a-b942-44191941ea4b" />
 
-Next, process activity was checked to see how “tor.exe” was run:
+**Next, process activity was checked to see how “tor.exe” was run:**
 
 ```kql
 DeviceProcessEvents
@@ -105,9 +109,9 @@ DeviceProcessEvents
 ```
 <img width="704" height="196" alt="image" src="https://github.com/user-attachments/assets/6f2cbf73-09fd-4ced-942b-552f2d07fb01" />
 
-This showed that “tor.exe” ran on “manny-vm,” and it was launched by “firefox.exe.” In plain terms: Tor was started from Firefox.
+**This showed that “tor.exe” ran on “manny-vm,” and it was launched by “firefox.exe.” In plain terms: Tor was started from Firefox.**
 
-After that, other TOR-related files created on the same device were reviewed:
+**After that, other TOR-related files created on the same device were reviewed:**
 
 ```kql
 DeviceFileEvents
@@ -119,13 +123,13 @@ DeviceFileEvents
 ```
 <img width="984" height="90" alt="image" src="https://github.com/user-attachments/assets/86b936d6-bfae-4efa-9429-9e72741692f3" />
 
-Two related files were found:
+**Two related files were found:**
 
-tor-shopping-list.txt.lnk
+**tor-shopping-list.txt.lnk**
 
-tor-shopping-list.txt.txt
+**tor-shopping-list.txt.txt**
 
-These were created about one second apart on Jan 15, 2026.
+**These were created about one second apart on Jan 15, 2026.**
 
 ---
 
@@ -180,7 +184,7 @@ These were created about one second apart on Jan 15, 2026.
 
 ## Summary
 
-
+In the last 24 hours, file creation logs were reviewed and narrowed down from 46,264  events to TOR-related activity. A file named tor.exe was confirmed as created on the device manny-vm, and the associated user was mannyuser (shown in the request account fields). Process logs then showed tor.exe was executed on manny-vm, with firefox.exe listed as the initiating process, meaning Tor was launched from Firefox. Additional TOR-related files were also created on the same device: tor-shopping-list.txt.lnk and tor-shopping-list.txt.txt, created about one second apart; the .lnk file is a Windows shortcut that can disguise itself as a harmless document. Based on confirmed TOR-related file creation and execution, the device was isolated in Microsoft Defender for Endpoint and management was notified per the lab scenario.
 
 ---
 
